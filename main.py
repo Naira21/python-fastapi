@@ -1,24 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy import Integer
 
-# Налаштування URL для MariaDB (без pymysql)
-DATABASE_URL = "mariadb+mariadbconnector://root:@localhost:3306/python-fastapi-study"
+from sqlalchemy.orm import Session
 
-# Підключення до бази даних
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from database import SessionLocal, engine
+from model import User, Base
 
-# Базовий клас для моделей
-Base = declarative_base()
-
-# Опис моделі таблиці
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), nullable=False)
-    email = Column(String(100), unique=True, index=True)
 
 # Ініціалізація FastAPI
 app = FastAPI()
